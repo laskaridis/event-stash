@@ -26,6 +26,10 @@ Rails.application.routes.draw do
 
     resources :passwords, only: [:create, :new, :edit, :update]
 
+    namespace :event_stash do
+      resources :event_types
+    end
+
     # Delayed job console available only in development env
     if Rails.env.development?
       match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]

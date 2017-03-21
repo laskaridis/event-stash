@@ -1,0 +1,143 @@
+<div class="container">
+<div class="row">
+  <%= form_for @event_type, html: { class: "form-horizontal" } do |form| %>
+
+    <legend><%= @event_type.name || "Create new event type" %></legend>
+
+    <div class="form-group <%= 'has-error' unless @event_type.errors[:name].empty? %>">
+      <%= form.label :name, class: 'col-sm-2 control-label' %>
+
+      <div class="col-sm-6">
+        <% if @event_type.new_record? %>
+          <%= form.text_field :name, class: 'form-control', autofocus: true %>
+
+          <% if @event_type.errors[:name].any? %>
+            <span class="help-block">
+              <%= @event_type.errors.full_messages_for(:name).first %>
+            </span>
+          <% end %>
+        <% else %>
+          <%= form.text_field :name, class: 'form-control', autofocus: true, readonly: true %>
+          <span class="help-block">
+            You cannot change an event name after creation
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-group <%= 'has-error' unless @event_type.errors[:description].empty? %>">
+      <%= form.label :description, class: 'col-sm-2 control-label' %>
+
+      <div class="col-sm-6">
+        <%= form.text_field :description, class: 'form-control' %>
+
+        <% if @event_type.errors[:description].any? %>
+          <span class="help-block">
+            <%= @event_type.errors.full_messages_for(:description).first %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :transaction_type, class: "col-sm-2 control-label" %>
+
+      <div class="col-sm-6">
+        <div class="radio">
+          <label>
+            <%= form.radio_button(:transaction_type, EventStash::EventType::TX_SUPPORT, { checked: true }) %>
+            Use the transaction provided or none
+          </label>
+          <label>
+            <%= form.radio_button(:transaction_type, EventStash::EventType::TX_REQUIRE) %>
+            Reject the event unless a transaction is provided
+          </label>
+          <label>
+            <%= form.radio_button(:transaction_type, EventStash::EventType::TX_CREATE) %>
+            Always create a new transaction for the event
+          </label>
+          <label>
+            <%= form.radio_button(:transaction_type, EventStash::EventType::TX_CREATE) %>
+            Reject the event if a transaction is provided
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :format, class: "col-sm-2 control-label" %>
+
+      <div class="col-sm-2">
+        <%= form.select :format, [
+          ["JSON", "application/json"],
+          ["XML", "application/xml"]],
+        { }, { class: "form-control" } %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :strict_format, class: "col-sm-2 control-label" %>
+
+      <div class="col-sm-6">
+        <div class="checkbox">
+          <label>
+            <%= form.check_box :strict_format %>
+            Reject messages with unrecognized attributes
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :attributes, class: 'col-sm-2 control-label' %>
+
+      <div class="col-sm-9">
+        <table id="event_type_attributes" class="table table-bordered">
+          <thead>
+            <th>
+              Key <span class="glyphicon glyphicon-exclamation-sign"
+                        aria-hidden="true"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="You should include the attribute in the event message using this key"></span>
+            </th>
+            <th>
+              Description
+              <span class="glyphicon glyphicon-exclamation-sign"
+                    aria-hidden="true"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Title for description" ></span>
+            </th>
+            <th>
+              Type
+              <span class="glyphicon glyphicon-exclamation-sign"
+                    aria-hidden="true"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Title for type" ></span>
+            </th>
+            <th></th>
+          </thead>
+          <tbody id="event_type_attributes">
+            <%= form.fields_for :event_type_attributes do |attributes_form| %>
+              <%= render partial: "event_type_attribute", locals: { attribute: attributes_form } %>
+            <% end %>
+          </tbody>
+        </table>
+
+        <%= link_to_add_table_row("Add new attribute", form, :event_type_attributes) %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-6">
+        <%= link_to t("buttons.cancel"), event_stash_event_types_path, class: "btn btn-default" %>
+        <button class="btn btn-default btn-primary" type="submit">
+          <%= t "buttons.save" %>
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>
+</div>

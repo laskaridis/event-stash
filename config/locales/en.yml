@@ -51,6 +51,7 @@ en:
     month: Month
     year: Year
   buttons:
+    save: Save
     register: Register
     login: Login
     logout: Logout

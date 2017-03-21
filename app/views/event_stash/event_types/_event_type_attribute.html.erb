@@ -1,0 +1,20 @@
+
+<tr>
+  <td>
+    <%= attribute.text_field :name, class: "form-control" %>
+  </td>
+  <td><%= attribute.text_field :description, class: "form-control" %></td>
+  <td>
+    <%= attribute.select :attribute_type, [
+      ["Integer", "integer"],
+      ["Float", "float"],
+      ["String", "string"],
+      ["Datetime", "datetime"],
+      ["Boolean", "boolean"]],
+    { include_blank: "Choose a type" },
+    { class: "form-control" } %>
+  </td>
+  <td>
+    <%= link_to_remove_table_row(attribute) %>
+  </td>
+</tr>

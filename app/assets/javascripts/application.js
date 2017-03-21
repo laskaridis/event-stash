@@ -15,3 +15,38 @@
 //= require bootstrap
 //= require turbolinks
 //= require_tree .
+
+var EventStash = {
+
+  removeTableRow: function( link ) {
+    var $link = $( link );
+
+    $link.prev( "input[type=hidden]" ).val("1");
+    $link.closest( "tr" ).hide();
+  },
+
+  addTableRow: function( link ) {
+    var $link = $( link );
+    var content = $link.attr("data-content");
+    var new_id = new Date().getTime();
+    var regexp = new RegExp("new_row_id", "g");
+
+    var last_row = $link.prev("table").find("tbody");
+    $(last_row).append(content.replace(regexp, new_id));
+  }
+};
+
+$(document).ready(function() {
+
+  $( "a[data-role=remove_table_row" ).click(function( e ) {
+    // e.preventDefault();
+    //
+    // EventStash.removeTableRow( this );
+  });
+
+  $( "a[data-role=add_table_row" ).click(function( e ) {
+    // e.preventDefault();
+    //
+    // EventStash.addTableRow( this );
+  });
+});
