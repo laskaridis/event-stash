@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :event_type, class: "EventStash::EventType" do
+  factory :event_type, class: "EventType" do
     sequence(:name) { |n| "EventType#{n}" }
     account { SecureRandom.uuid }
     format { "application/xml" }

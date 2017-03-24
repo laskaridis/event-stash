@@ -26,8 +26,8 @@ Rails.application.routes.draw do
 
     resources :passwords, only: [:create, :new, :edit, :update]
 
-    namespace :event_stash do
-      resources :event_types
+    resources :event_types do
+      resources :event_type_attributes, shallow: true
     end
 
     # Delayed job console available only in development env

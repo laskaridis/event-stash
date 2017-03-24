@@ -1,0 +1,67 @@
+<%= form_for [@event_type, @event_type_attribute], remote: true, html: { id: "add_event_type_attribute", class: "form-horizontal" } do |form| %>
+
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="new_attribute_modal_label">Add new attribute</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group <%= 'has-error' unless @event_type_attribute.errors[:name].empty? %>">
+            <%= form.label :name, class: "col-sm-2 control-label" %>
+
+            <div class="col-sm-9">
+              <%= form.text_field :name, class: "form-control" %>
+
+              <% if @event_type_attribute.errors[:name].any? %>
+              <span class="help-block">
+                <%= @event_type_attribute.errors.full_messages_for(:name).first %>
+              </span>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="form-group <%= 'has-error' unless @event_type_attribute.errors[:description].empty? %>">
+            <%= form.label :description, class: "col-sm-2 control-label" %>
+
+            <div class="col-sm-9">
+              <%= form.text_field :description, class: "form-control" %>
+
+              <% if @event_type_attribute.errors[:description].any? %>
+              <span class="help-block">
+                <%= @event_type_attribute.errors.full_messages_for(:description).first %>
+              </span>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="form-group <%= 'has-error' unless @event_type_attribute.errors[:attribute_type].empty? %>">
+            <%= form.label :attribute_type, class: "col-sm-2 control-label" %>
+
+            <div class="col-sm-6">
+              <%= form.select :attribute_type, [
+                                                     ["Integer", "integer"],
+                                                     ["Float", "float"],
+                                                     ["String", "string"],
+                                                     ["Datetime", "datetime"],
+                                                     ["Boolean", "boolean"]],
+                              { include_blank: "Choose a type" },
+                              { class: "form-control" } %>
+
+              <% if @event_type_attribute.errors[:attribute_type].any? %>
+              <span class="help-block">
+                <%= @event_type_attribute.errors.full_messages_for(:attribute_type).first %>
+              </span>
+              <% end %>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="$('form#add_event_type_attribute').submit()">Save changes</button>
+        </div>
+      </div>
+    </div>
+<% end %>

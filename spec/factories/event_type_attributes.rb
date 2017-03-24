@@ -1,6 +1,6 @@
 FactoryGirl.define do
 
-  factory :event_type_attribute, class: "EventStash::EventTypeAttribute" do
+  factory :event_type_attribute, class: "EventTypeAttribute" do
     association :event_type
     sequence(:name) { |n| "EventTypeAttributeName#{n}" }
     attribute_type "string"

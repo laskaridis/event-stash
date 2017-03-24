@@ -5,7 +5,6 @@ class CreateEventTypeAttributes < ActiveRecord::Migration
       t.string :description
       t.integer :event_type_id, null: false
       t.string :attribute_type, null: false
-
       t.timestamps null: false
     end
 

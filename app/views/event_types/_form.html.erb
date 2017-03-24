@@ -39,25 +39,24 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <%= form.label :transaction_type, class: "col-sm-2 control-label" %>
+    <div class="form-group"> <%= form.label :transaction_type, class: "col-sm-2 control-label" %>
 
       <div class="col-sm-6">
         <div class="radio">
           <label>
-            <%= form.radio_button(:transaction_type, EventStash::EventType::TX_SUPPORT, { checked: true }) %>
+            <%= form.radio_button(:transaction_type, EventType::TX_SUPPORT, { checked: true }) %>
             Use the transaction provided or none
           </label>
           <label>
-            <%= form.radio_button(:transaction_type, EventStash::EventType::TX_REQUIRE) %>
+            <%= form.radio_button(:transaction_type, EventType::TX_REQUIRE) %>
             Reject the event unless a transaction is provided
           </label>
           <label>
-            <%= form.radio_button(:transaction_type, EventStash::EventType::TX_CREATE) %>
+            <%= form.radio_button(:transaction_type, EventType::TX_CREATE) %>
             Always create a new transaction for the event
           </label>
           <label>
-            <%= form.radio_button(:transaction_type, EventStash::EventType::TX_CREATE) %>
+            <%= form.radio_button(:transaction_type, EventType::TX_CREATE) %>
             Reject the event if a transaction is provided
           </label>
         </div>
@@ -88,56 +87,67 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <%= form.label :attributes, class: 'col-sm-2 control-label' %>
+    <% if @event_type.persisted? %>
+      <div class="form-group">
+        <%= form.label :attributes, class: 'col-sm-2 control-label' %>
 
-      <div class="col-sm-9">
-        <table id="event_type_attributes" class="table table-bordered">
-          <thead>
-            <th>
-              Key <span class="glyphicon glyphicon-exclamation-sign"
-                        aria-hidden="true"
-                        data-toggle="tooltip"
-                        data-placement="top"
-                        title="You should include the attribute in the event message using this key"></span>
-            </th>
-            <th>
-              Description
-              <span class="glyphicon glyphicon-exclamation-sign"
-                    aria-hidden="true"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Title for description" ></span>
-            </th>
-            <th>
-              Type
-              <span class="glyphicon glyphicon-exclamation-sign"
-                    aria-hidden="true"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Title for type" ></span>
-            </th>
-            <th></th>
-          </thead>
-          <tbody id="event_type_attributes">
-            <%= form.fields_for :event_type_attributes do |attributes_form| %>
-              <%= render partial: "event_type_attribute", locals: { attribute: attributes_form } %>
-            <% end %>
-          </tbody>
-        </table>
+        <div class="col-sm-9">
+          <table id="event_type_attributes" class="table table-bordered">
+            <thead>
+              <th>
+                Key <span class="glyphicon glyphicon-exclamation-sign"
+                          aria-hidden="true"
+                          data-toggle="tooltip"
+                          data-placement="top"
+                          title="You should include the attribute in the event message using this key"></span>
+              </th>
+              <th>
+                Description
+                <span class="glyphicon glyphicon-exclamation-sign"
+                      aria-hidden="true"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Title for description" ></span>
+              </th>
+              <th>
+                Type
+                <span class="glyphicon glyphicon-exclamation-sign"
+                      aria-hidden="true"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Title for type" ></span>
+              </th>
+              <th>Actions</th>
+            </thead>
+            <tbody id="event_type_attributes">
+              <%= render partial: "event_type_attributes" %>
+            </tbody>
+          </table>
 
-        <%= link_to_add_table_row("Add new attribute", form, :event_type_attributes) %>
+          <a id="add_new_attribute"
+             href="#"
+             class="btn btn-default"
+             data-toggle="modal"
+             data-target="#new_attribute_modal">Add new attribute</a>
+        </div>
       </div>
-    </div>
+    <% end %>
 
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-6">
-        <%= link_to t("buttons.cancel"), event_stash_event_types_path, class: "btn btn-default" %>
+        <%= link_to t("buttons.cancel"), event_types_path, class: "btn btn-default" %>
         <button class="btn btn-default btn-primary" type="submit">
           <%= t "buttons.save" %>
         </button>
       </div>
     </div>
   <% end %>
+
+  <% if @event_type.persisted? %>
+    <div class="modal fade" id="new_attribute_modal" tabindex="-1" role="dialog" aria-labelledby="new_attribute_modal_label">
+      <%= render partial: "event_type_attributes/form" %>
+    </div>
+  <% end %>
+
 </div>
 </div>

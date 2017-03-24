@@ -33,6 +33,10 @@ var EventStash = {
 
     var last_row = $link.prev("table").find("tbody");
     $(last_row).append(content.replace(regexp, new_id));
+  },
+
+  submitParentForm: function( link ) {
+    $( link ).closest( "form" ).submit();
   }
 };
 
